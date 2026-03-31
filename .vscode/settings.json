@@ -1,0 +1,7 @@
+{
+  "clangd.arguments": [
+    "--header-insertion=never",
+    // "--experimental-modules-support",
+    "--compile-commands-dir=build"
+  ]
+}

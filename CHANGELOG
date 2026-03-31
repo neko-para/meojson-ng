@@ -1,0 +1,10 @@
+[BREAKING] 根据情况抛出不同类型的异常
+添加了as_string, as_string_view, as_array, as_object的&&方法
+[BREAKING] 移除了as_array和as_object中针对empty的处理
+[BREAKING] 移除了enum的字符串反射能力
+[BREAKING] fixed_array_size现在拒绝非数组类型
+[BREAKING] array的push_back现在拒绝多参数构造, 按push_back行为执行
+[BREAKING] object的insert现在拒绝多参数构造, 按insert行为执行
+[BREAKING] 强制check_json实现需要noexcept
+添加了as_array_unsafe和as_object_unsafe
+object添加了transparent key支持
