@@ -2,6 +2,7 @@
 
 #include "forward.hpp"
 
+#include <optional>
 #include <string>
 #include <variant>
 

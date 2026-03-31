@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <optional>
 #include <string>
 
 #include "forward.hpp"
@@ -84,11 +85,11 @@ public:
 
     void clear() noexcept;
     template <all_object_key K, typename V>
-    requires std::is_constructible_v<mapped_type, V&&>
-    std::pair<iterator, bool> insert(K&& key, V&& val);
+    requires std::is_constructible_v<object::mapped_type, V&&>
+    std::pair<object::iterator, bool> insert(K&& key, V&& val);
     template <all_object_key K, typename V>
-    requires std::is_constructible_v<mapped_type, V&&>
-    std::pair<iterator, bool> emplace(K&& key, V&& val);
+    requires std::is_constructible_v<object::mapped_type, V&&>
+    std::pair<object::iterator, bool> emplace(K&& key, V&& val);
     template <all_object_key K>
     bool erase(const K& pos);
     bool erase(iterator iter);
