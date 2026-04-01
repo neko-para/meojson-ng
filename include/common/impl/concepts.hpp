@@ -148,4 +148,10 @@ concept same_as_one_of = (std::same_as<T, Us> || ...);
 template <typename... Ts>
 using last_of_t = std::tuple_element_t<sizeof...(Ts) - 1, std::tuple<Ts...>>;
 
+template <typename T>
+using wrap_string_t = std::conditional_t<std::is_constructible_v<std::string, T>, std::string, T>;
+
+template <typename... Ts>
+using get_access_t = wrap_string_t<std::decay_t<last_of_t<Ts...>>>;
+
 }

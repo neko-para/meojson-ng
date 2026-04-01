@@ -1,19 +1,62 @@
-#include <array>
 #include <iostream>
 
-#include "json.hpp"
+#include "array_test.h"
+#include "include_test.h"
+#include "jsonc_test.h"
+#include "object_test.h"
+#include "parse_test.h"
+#include "precision_test.h"
+#include "serializing_test.h"
+#include "unicode_test.h"
+#include "value_test.h"
+#include "enum_test.h"
+#include "smart_ptr_test.h"
 
 int main()
 {
-    std::vector<int> vec = { 1, 2, 3 };
+    std::cout << "\n****** Testing ******\n" << std::endl;
 
-    json_ng::value v = vec;
-    v.as<std::variant<std::array<int, 4>, bool>>();
+    std::cout << "\n*** parsing ***\n" << std::endl;
+    bool success = parsing();
 
-    std::cout << v.get(1, 5) << std::endl;
-    std::optional<int> opt;
-    json_ng::value vv = opt;
-    vv.as<std::optional<int>>();
-    vv.as<std::shared_ptr<int>>();
+    std::cout << "\n*** serializing ***\n" << std::endl;
+    success &= serializing();
+
+    std::cout << "\n*** jsonizing ***\n" << std::endl;
+    success &= jsonizing();
+
+    std::cout << "\n*** include_test ***\n" << std::endl;
+    success &= include_test();
+
+    std::cout << "\n*** precision_test ***\n" << std::endl;
+    success &= precision_test();
+
+    std::cout << "\n*** unicode_test ***\n" << std::endl;
+    success &= unicode_test();
+
+    std::cout << "\n*** value_test ***\n" << std::endl;
+    success &= value_test();
+
+    std::cout << "\n*** enum_test ***\n" << std::endl;
+    success &= enum_test();
+
+    std::cout << "\n*** object_test ***\n" << std::endl;
+    success &= object_test();
+
+    std::cout << "\n*** array_test ***\n" << std::endl;
+    success &= array_test();
+
+    std::cout << "\n*** jsonc_test ***\n" << std::endl;
+    success &= jsonc_test();
+
+    std::cout << "\n*** smart_ptr_test ***\n" << std::endl;
+    success &= smart_ptr_test();
+
+    if (!success) {
+        std::cout << "\n****** Test failed ******\n" << std::endl;
+        return -1;
+    }
+
+    std::cout << "\n****** Test passed ******\n" << std::endl;
     return 0;
 }

@@ -1,1 +1,7 @@
 build
+
+# Test output
+
+serializing.json
+wstring_serializing.json
+meo.json

@@ -13,7 +13,7 @@ inline std::optional<T> value::find(size_t pos) const&
     if (!is_array()) {
         return std::nullopt;
     }
-    return as_array_unsafe().find(pos);
+    return as_array_unsafe().find<T>(pos);
 }
 
 template <typename T>
@@ -22,7 +22,7 @@ inline std::optional<T> value::find(size_t pos) &&
     if (!is_array()) {
         return std::nullopt;
     }
-    return std::move(*this).as_array_unsafe().find(pos);
+    return std::move(*this).as_array_unsafe().find<T>(pos);
 }
 
 template <typename T, all_object_key K>
@@ -31,7 +31,7 @@ inline std::optional<T> value::find(const K& key) const&
     if (!is_object()) {
         return std::nullopt;
     }
-    return as_object_unsafe().find(key);
+    return as_object_unsafe().find<T, K>(key);
 }
 
 template <typename T, all_object_key K>
@@ -40,12 +40,12 @@ inline std::optional<T> value::find(const K& key) &&
     if (!is_object()) {
         return std::nullopt;
     }
-    return std::move(*this).as_object_unsafe().find(key);
+    return std::move(*this).as_object_unsafe().find<T, K>(key);
 }
 
 template <typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> value::get(Ks&&... keys) const&
+inline _utils::get_access_t<Ks...> value::get(Ks&&... keys) const&
 {
     constexpr size_t count = sizeof...(Ks);
     auto&& args = std::forward_as_tuple(std::forward<Ks>(keys)...);
@@ -57,7 +57,7 @@ inline std::decay_t<_utils::last_of_t<Ks...>> value::get(Ks&&... keys) const&
 
 template <typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> value::get(Ks&&... keys) &&
+inline _utils::get_access_t<Ks...> value::get(Ks&&... keys) &&
 {
     constexpr size_t count = sizeof...(Ks);
     auto&& args = std::forward_as_tuple(std::forward<Ks>(keys)...);
@@ -132,7 +132,7 @@ inline value& value::operator|=(object&& rhs)
 }
 
 template <typename Ret, typename K, typename... Ks>
-inline std::decay_t<Ret> value::get_helper(Ret&& def, K&& key, Ks&&... keys) const&
+inline _utils::wrap_string_t<std::decay_t<Ret>> value::get_helper(Ret&& def, K&& key, Ks&&... keys) const&
 {
     if constexpr (std::is_constructible_v<std::string, K>) {
         if (!is_object()) {
@@ -162,7 +162,7 @@ inline std::decay_t<Ret> value::get_helper(Ret&& def, K&& key, Ks&&... keys) con
 }
 
 template <typename Ret, typename K, typename... Ks>
-inline std::decay_t<Ret> value::get_helper(Ret&& def, K&& key, Ks&&... keys) &&
+inline _utils::wrap_string_t<std::decay_t<Ret>> value::get_helper(Ret&& def, K&& key, Ks&&... keys) &&
 {
     if constexpr (std::is_constructible_v<std::string, K>) {
         if (!is_object()) {
@@ -192,16 +192,16 @@ inline std::decay_t<Ret> value::get_helper(Ret&& def, K&& key, Ks&&... keys) &&
 }
 
 template <typename Ret>
-inline std::decay_t<Ret> value::get_helper(Ret&& def) const&
+inline _utils::wrap_string_t<std::decay_t<Ret>> value::get_helper(Ret&& def) const&
 {
-    using final_t = std::decay_t<Ret>;
+    using final_t = _utils::wrap_string_t<std::decay_t<Ret>>;
     return is<final_t>() ? as<final_t>() : std::forward<Ret>(def);
 }
 
 template <typename Ret>
-inline std::decay_t<Ret> value::get_helper(Ret&& def) &&
+inline _utils::wrap_string_t<std::decay_t<Ret>> value::get_helper(Ret&& def) &&
 {
-    using final_t = std::decay_t<Ret>;
+    using final_t = _utils::wrap_string_t<std::decay_t<Ret>>;
     return is<final_t>() ? std::move(*this).as<final_t>() : std::forward<Ret>(def);
 }
 

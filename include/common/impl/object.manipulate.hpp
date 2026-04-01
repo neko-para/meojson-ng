@@ -38,7 +38,7 @@ inline std::optional<T> object::find(const K& key) &&
 
 template <all_object_key K, typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> object::get(const K& key, Ks&&... keys) const&
+inline _utils::get_access_t<Ks...> object::get(const K& key, Ks&&... keys) const&
 {
     if (auto it = find_(key); it != end()) {
         return it->second.get(std::forward<Ks>(keys)...);
@@ -50,7 +50,7 @@ inline std::decay_t<_utils::last_of_t<Ks...>> object::get(const K& key, Ks&&... 
 
 template <all_object_key K, typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> object::get(const K& key, Ks&&... keys) &&
+inline _utils::get_access_t<Ks...> object::get(const K& key, Ks&&... keys) &&
 {
     if (auto it = find_(key); it != end()) {
         return std::move(it->second).get(std::forward<Ks>(keys)...);

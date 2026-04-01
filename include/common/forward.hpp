@@ -8,7 +8,7 @@
 #include <vector>
 
 #ifndef MEOJSON_NAMESPACE
-#define MEOJSON_NAMESPACE json_ng
+#define MEOJSON_NAMESPACE json
 #endif
 
 namespace MEOJSON_NAMESPACE

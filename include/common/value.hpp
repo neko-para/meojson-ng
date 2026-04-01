@@ -22,6 +22,9 @@ class value
     friend struct ext::jsonization_wrapper;
 
 public:
+    using raw_value = raw_value;
+    using var_t = raw_value;
+
     enum class value_type : std::uint8_t
     {
         invalid,
@@ -77,6 +80,11 @@ public:
 
     template <ext::has_to_json T>
     value(T&& val);
+
+    // Constructed from raw data
+    template <typename... args_t>
+    requires std::is_constructible_v<raw_value, args_t...>
+    value(value_type type, args_t&&... args);
 
 #pragma mark - Checker
 public:
@@ -223,10 +231,10 @@ public:
 
     template <typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(Ks&&... keys) const&;
+    _utils::get_access_t<Ks...> get(Ks&&... keys) const&;
     template <typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(Ks&&... keys) &&;
+    _utils::get_access_t<Ks...> get(Ks&&... keys) &&;
 
     value operator+(const array& rhs) const&;
     value operator+(array&& rhs) const&;
@@ -246,13 +254,13 @@ public:
 
 private:
     template <typename Ret, typename K, typename... Ks>
-    std::decay_t<Ret> get_helper(Ret&& def, K&& key, Ks&&... keys) const&;
+    _utils::wrap_string_t<std::decay_t<Ret>> get_helper(Ret&& def, K&& key, Ks&&... keys) const&;
     template <typename Ret, typename K, typename... Ks>
-    std::decay_t<Ret> get_helper(Ret&& def, K&& key, Ks&&... keys) &&;
+    _utils::wrap_string_t<std::decay_t<Ret>> get_helper(Ret&& def, K&& key, Ks&&... keys) &&;
     template <typename Ret>
-    std::decay_t<Ret> get_helper(Ret&& def) const&;
+    _utils::wrap_string_t<std::decay_t<Ret>> get_helper(Ret&& def) const&;
     template <typename Ret>
-    std::decay_t<Ret> get_helper(Ret&& def) &&;
+    _utils::wrap_string_t<std::decay_t<Ret>> get_helper(Ret&& def) &&;
 
 #pragma mark - Stringify
 public:

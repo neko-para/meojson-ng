@@ -2,9 +2,8 @@
 #include <map>
 #include <unordered_map>
 
-#define MEOJSON_NAMESPACE json
-
 #include "json.hpp"
+#include "object_test.h"
 
 bool test_object_constructors();
 bool test_object_access_methods();
@@ -15,8 +14,8 @@ bool test_object_serialization();
 
 bool object_test()
 {
-    return test_object_constructors() && test_object_access_methods() && test_object_modification() && test_object_iterators()
-           && test_object_operators() && test_object_serialization();
+    return test_object_constructors() && test_object_access_methods() && test_object_modification()
+           && test_object_iterators() && test_object_operators() && test_object_serialization();
 }
 
 bool test_object_constructors()

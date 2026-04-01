@@ -16,6 +16,8 @@ class object
     friend class array;
 
 public:
+    using raw_object = raw_object;
+
     using key_type = typename raw_object::key_type;
     using mapped_type = typename raw_object::mapped_type;
     using value_type = typename raw_object::value_type;
@@ -128,10 +130,10 @@ public:
 
     template <all_object_key K, typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) const&;
+    _utils::get_access_t<Ks...> get(const K& key, Ks&&... keys) const&;
     template <all_object_key K, typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) &&;
+    _utils::get_access_t<Ks...> get(const K& key, Ks&&... keys) &&;
 
     object operator|(const object& rhs) const&;
     object operator|(object&& rhs) const&;

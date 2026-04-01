@@ -27,5 +27,6 @@
 #include "impl/extends.hpp"
 #include "impl/extends.impl.hpp"
 #include "impl/specializes.hpp"
+#include "impl/stream.hpp"
 
 // IWYU pragma: end_exports

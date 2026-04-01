@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iomanip>
+#include <limits>
+#include <sstream>
 #include <string>
 #include <string_view>
 

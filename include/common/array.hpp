@@ -15,7 +15,7 @@ class array
     friend class object;
 
 public:
-    using raw_array = std::vector<value>;
+    using raw_array = raw_array;
 
     using value_type = typename raw_array::value_type;
     using reference = typename raw_array::reference;
@@ -120,10 +120,10 @@ public:
 
     template <std::integral K, typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) const&;
+    _utils::get_access_t<Ks...> get(const K& key, Ks&&... keys) const&;
     template <std::integral K, typename... Ks>
     requires(sizeof...(Ks) > 0)
-    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) &&;
+    _utils::get_access_t<Ks...> get(const K& key, Ks&&... keys) &&;
 
     array operator+(const array& rhs) const&;
     array operator+(array&& rhs) const&;

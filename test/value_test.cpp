@@ -1,9 +1,8 @@
 #include <iostream>
 #include <limits>
 
-#define MEOJSON_NAMESPACE json
-
 #include "json.hpp"
+#include "value_test.h"
 
 bool test_value_constructors();
 bool test_value_type_checks();
@@ -15,8 +14,9 @@ bool test_value_extended_conversions();
 
 bool value_test()
 {
-    return test_value_constructors() && test_value_type_checks() && test_value_access_methods() && test_value_conversion_methods()
-           && test_value_operators() && test_value_modification() && test_value_extended_conversions();
+    return test_value_constructors() && test_value_type_checks() && test_value_access_methods()
+           && test_value_conversion_methods() && test_value_operators() && test_value_modification()
+           && test_value_extended_conversions();
 }
 
 bool test_value_constructors()
@@ -55,8 +55,8 @@ bool test_value_constructors()
     json::value v_ulong = 42ul;
     json::value v_llong = 42ll;
     json::value v_ullong = 42ull;
-    if (!v_int.is_number() || !v_uint.is_number() || !v_long.is_number() || !v_ulong.is_number() || !v_llong.is_number()
-        || !v_ullong.is_number()) {
+    if (!v_int.is_number() || !v_uint.is_number() || !v_long.is_number() || !v_ulong.is_number()
+        || !v_llong.is_number() || !v_ullong.is_number()) {
         std::cerr << "Integer constructor failed" << std::endl;
         return false;
     }
@@ -156,8 +156,8 @@ bool test_value_type_checks()
     json::value v_obj = json::object { { "key", "value" } };
 
     // is_null测试
-    if (!v_null.is_null() || v_bool.is_null() || v_int.is_null() || v_double.is_null() || v_str.is_null() || v_arr.is_null()
-        || v_obj.is_null()) {
+    if (!v_null.is_null() || v_bool.is_null() || v_int.is_null() || v_double.is_null() || v_str.is_null()
+        || v_arr.is_null() || v_obj.is_null()) {
         std::cerr << "is_null() test failed" << std::endl;
         return false;
     }
@@ -170,29 +170,29 @@ bool test_value_type_checks()
     }
 
     // is_number测试
-    if (v_null.is_number() || v_bool.is_number() || !v_int.is_number() || !v_double.is_number() || v_str.is_number() || v_arr.is_number()
-        || v_obj.is_number()) {
+    if (v_null.is_number() || v_bool.is_number() || !v_int.is_number() || !v_double.is_number() || v_str.is_number()
+        || v_arr.is_number() || v_obj.is_number()) {
         std::cerr << "is_number() test failed" << std::endl;
         return false;
     }
 
     // is_string测试
-    if (v_null.is_string() || v_bool.is_string() || v_int.is_string() || v_double.is_string() || !v_str.is_string() || v_arr.is_string()
-        || v_obj.is_string()) {
+    if (v_null.is_string() || v_bool.is_string() || v_int.is_string() || v_double.is_string() || !v_str.is_string()
+        || v_arr.is_string() || v_obj.is_string()) {
         std::cerr << "is_string() test failed" << std::endl;
         return false;
     }
 
     // is_array测试
-    if (v_null.is_array() || v_bool.is_array() || v_int.is_array() || v_double.is_array() || v_str.is_array() || !v_arr.is_array()
-        || v_obj.is_array()) {
+    if (v_null.is_array() || v_bool.is_array() || v_int.is_array() || v_double.is_array() || v_str.is_array()
+        || !v_arr.is_array() || v_obj.is_array()) {
         std::cerr << "is_array() test failed" << std::endl;
         return false;
     }
 
     // is_object测试
-    if (v_null.is_object() || v_bool.is_object() || v_int.is_object() || v_double.is_object() || v_str.is_object() || v_arr.is_object()
-        || !v_obj.is_object()) {
+    if (v_null.is_object() || v_bool.is_object() || v_int.is_object() || v_double.is_object() || v_str.is_object()
+        || v_arr.is_object() || !v_obj.is_object()) {
         std::cerr << "is_object() test failed" << std::endl;
         return false;
     }
@@ -205,8 +205,8 @@ bool test_value_type_checks()
 
     // empty测试
     json::value v_empty_str = "";
-    json::value v_empty_arr = json::array { };
-    json::value v_empty_obj = json::object { };
+    json::value v_empty_arr = json::array {};
+    json::value v_empty_obj = json::object {};
     if (!v_empty_str.empty() || !v_empty_arr.empty() || !v_empty_obj.empty()) {
         std::cerr << "empty() test failed for empty containers" << std::endl;
         return false;
@@ -609,7 +609,7 @@ bool test_value_modification()
     std::cout << "Testing value modification..." << std::endl;
 
     // emplace测试（array）
-    json::value arr = json::array { };
+    json::value arr = json::array {};
     arr.emplace(1);
     arr.emplace(2);
     arr.emplace("three");
@@ -619,7 +619,7 @@ bool test_value_modification()
     }
 
     // emplace测试（object）
-    json::value obj = json::object { };
+    json::value obj = json::object {};
     obj.emplace("key1", "value1");
     obj.emplace("key2", 42);
     if (obj.as_object().size() != 2 || obj["key2"].as_integer() != 42) {
@@ -669,13 +669,15 @@ bool test_value_modification()
     }
 
     // 序列化测试
-    json::value test_val = json::object { { "string", "hello" },
-                                          { "number", 42 },
-                                          { "float", 3.14 },
-                                          { "bool", true },
-                                          { "null", nullptr },
-                                          { "array", json::array { 1, 2, 3 } },
-                                          { "object", json::object { { "nested", "value" } } } };
+    json::value test_val = json::object {
+        { "string", "hello" },
+        { "number", 42 },
+        { "float", 3.14 },
+        { "bool", true },
+        { "null", nullptr },
+        { "array", json::array { 1, 2, 3 } },
+        { "object", json::object { { "nested", "value" } } }
+    };
 
     std::string json_str = test_val.to_string();
     if (json_str.empty()) {
@@ -710,7 +712,7 @@ bool test_value_extended_conversions()
     std::cout << "Testing value extended conversions..." << std::endl;
 
     // 测试 std::monostate 构造函数
-    json::value v_monostate = std::monostate { };
+    json::value v_monostate = std::monostate {};
     if (!v_monostate.is_null()) {
         std::cerr << "std::monostate constructor should create null value" << std::endl;
         return false;
@@ -889,9 +891,9 @@ bool test_value_extended_conversions()
 
     // 测试 std::variant 支持 std::monostate
     using variant_with_monostate = std::variant<std::monostate, int, std::string>;
-
+    
     // 从 variant 构造 value
-    json::value v_from_variant1 = variant_with_monostate { std::monostate { } };
+    json::value v_from_variant1 = variant_with_monostate { std::monostate {} };
     if (!v_from_variant1.is_null()) {
         std::cerr << "value constructor from variant<monostate> should create null value" << std::endl;
         return false;

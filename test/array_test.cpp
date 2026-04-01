@@ -5,9 +5,8 @@
 #include <set>
 #include <vector>
 
-#define MEOJSON_NAMESPACE json
-
 #include "json.hpp"
+#include "array_test.h"
 
 bool test_array_constructors();
 bool test_array_access_methods();
@@ -384,7 +383,8 @@ bool test_array_serialization()
 {
     std::cout << "Testing array serialization..." << std::endl;
 
-    json::array arr { 1, "two", 3.14, true, nullptr, json::array { "nested", "array" }, json::object { { "nested", "object" } } };
+    json::array arr { 1, "two", 3.14, true, nullptr, json::array { "nested", "array" },
+                      json::object { { "nested", "object" } } };
 
     // to_string测试
     std::string json_str = arr.to_string();

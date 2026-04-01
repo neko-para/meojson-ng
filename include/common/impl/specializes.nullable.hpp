@@ -11,7 +11,9 @@ template <_utils::is_nullable T>
 class jsonization<T>
 {
 public:
-    bool check_json(const value& val) const noexcept { return val.is_null() || val.is<_utils::nullable_value_t<T>>(); }
+    using inner_type = _utils::nullable_value_t<T>;
+
+    bool check_json(const value& val) const noexcept { return val.is_null() || val.is<inner_type>(); }
 
     value to_json(const T& t) const
     {
@@ -31,7 +33,7 @@ public:
                 t = std::nullopt;
             }
             else {
-                t = val.as<T>();
+                t = val.as<inner_type>();
             }
             return true;
         }
@@ -40,7 +42,7 @@ public:
                 t = nullptr;
             }
             else {
-                t = std::make_shared<T>(val.as<T>());
+                t = std::make_shared<inner_type>(val.as<inner_type>());
             }
             return true;
         }
@@ -49,7 +51,7 @@ public:
                 t = nullptr;
             }
             else {
-                t = std::make_unique<T>(val.as<T>());
+                t = std::make_unique<inner_type>(val.as<inner_type>());
             }
             return true;
         }
@@ -76,7 +78,7 @@ public:
                 t = std::nullopt;
             }
             else {
-                t = std::move(val).as<T>();
+                t = std::move(val).as<inner_type>();
             }
             return true;
         }
@@ -85,7 +87,7 @@ public:
                 t = nullptr;
             }
             else {
-                t = std::make_shared<T>(std::move(val).as<T>());
+                t = std::make_shared<inner_type>(std::move(val).as<inner_type>());
             }
             return true;
         }
@@ -94,7 +96,7 @@ public:
                 t = nullptr;
             }
             else {
-                t = std::make_unique<T>(std::move(val).as<T>());
+                t = std::make_unique<inner_type>(std::move(val).as<inner_type>());
             }
             return true;
         }

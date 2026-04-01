@@ -126,6 +126,15 @@ inline value::value(T&& val)
 {
 }
 
+// Constructed from raw data
+template <typename... args_t>
+requires std::is_constructible_v<raw_value, args_t...>
+inline value::value(value_type type, args_t&&... args)
+    : _type(type)
+    , _data(std::forward<args_t>(args)...)
+{
+}
+
 inline raw_value value::deep_copy(const raw_value& src)
 {
     raw_value dst;

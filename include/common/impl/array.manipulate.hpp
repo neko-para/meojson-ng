@@ -39,7 +39,7 @@ inline std::optional<T> array::find(size_t pos) &&
 
 template <std::integral K, typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> array::get(const K& key, Ks&&... keys) const&
+inline _utils::get_access_t<Ks...> array::get(const K& key, Ks&&... keys) const&
 {
     if (exists(key)) {
         return _data[key].get(std::forward<Ks>(keys)...);
@@ -51,7 +51,7 @@ inline std::decay_t<_utils::last_of_t<Ks...>> array::get(const K& key, Ks&&... k
 
 template <std::integral K, typename... Ks>
 requires(sizeof...(Ks) > 0)
-inline std::decay_t<_utils::last_of_t<Ks...>> array::get(const K& key, Ks&&... keys) &&
+inline _utils::get_access_t<Ks...> array::get(const K& key, Ks&&... keys) &&
 {
     if (exists(key)) {
         return std::move(_data[key]).get(std::forward<Ks>(keys)...);

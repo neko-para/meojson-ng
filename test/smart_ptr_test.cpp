@@ -3,9 +3,8 @@
 #include <string>
 #include <vector>
 
-#define MEOJSON_NAMESPACE json
-
 #include "json.hpp"
+#include "smart_ptr_test.h"
 
 bool test_shared_ptr_constructors();
 bool test_unique_ptr_constructors();
@@ -16,8 +15,8 @@ bool test_smart_ptr_complex_types();
 
 bool smart_ptr_test()
 {
-    return test_shared_ptr_constructors() && test_unique_ptr_constructors() && test_smart_ptr_is_checks() && test_smart_ptr_conversions()
-           && test_smart_ptr_as_methods() && test_smart_ptr_complex_types();
+    return test_shared_ptr_constructors() && test_unique_ptr_constructors() && test_smart_ptr_is_checks()
+           && test_smart_ptr_conversions() && test_smart_ptr_as_methods() && test_smart_ptr_complex_types();
 }
 
 bool test_shared_ptr_constructors()
