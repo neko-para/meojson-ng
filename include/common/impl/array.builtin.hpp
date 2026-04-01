@@ -5,7 +5,7 @@
 #include "../value.hpp"
 #include "extends.impl.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline array::array() = default;
@@ -33,6 +33,11 @@ inline array::array(std::initializer_list<value_type> list)
 template <ext::has_to_json_array T>
 inline array::array(T&& val)
     : array(ext::jsonization_wrapper<std::remove_cvref_t<T>>::to_json(std::forward<T>(val)))
+{
+}
+
+inline array::array(raw_array&& args)
+    : _data(std::move(args))
 {
 }
 

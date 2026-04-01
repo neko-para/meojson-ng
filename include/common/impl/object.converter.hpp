@@ -3,7 +3,7 @@
 #include "../object.hpp"
 #include "exception.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 template <ext::has_from_json_object T>

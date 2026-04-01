@@ -8,7 +8,7 @@
 #include "extends.hpp"
 #include "utils.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline value::operator std::nullptr_t() const

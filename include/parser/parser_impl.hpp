@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../common/impl/utils.hpp"
 #include "parser.hpp"
 
 namespace json
@@ -224,7 +225,7 @@ inline value parser<accept_jsonc, parsing_t, accel_traits>::parse_array()
         return invalid_value();
     }
 
-    return array(std::move(result));
+    return array { std::move(result) };
 }
 
 template <bool accept_jsonc, typename parsing_t, typename accel_traits>
@@ -593,18 +594,18 @@ inline bool parser<accept_jsonc, parsing_t, accel_traits>::skip_digit()
 // *      utils impl       *
 // *************************
 
-template <typename parsing_t>
+MEOJSON_EXPORT template <typename parsing_t>
 inline std::optional<value> parse(const parsing_t& content)
 {
     return parser<false, parsing_t>::parse(content);
 }
 
-inline std::optional<value> parse(const char* content)
+MEOJSON_EXPORT inline std::optional<value> parse(const char* content)
 {
     return parse(std::string_view { content });
 }
 
-inline std::optional<value> parse(std::istream& istream, bool check_bom, bool with_commets)
+MEOJSON_EXPORT inline std::optional<value> parse(std::istream& istream, bool check_bom, bool with_commets)
 {
     istream.seekg(0, std::ios::end);
     auto file_size = istream.tellg();
@@ -628,7 +629,7 @@ inline std::optional<value> parse(std::istream& istream, bool check_bom, bool wi
     return with_commets ? parsec(str) : parse(str);
 }
 
-template <typename path_t>
+MEOJSON_EXPORT template <typename path_t>
 inline std::optional<value> open(const path_t& filepath, bool check_bom, bool with_commets)
 {
     std::ifstream ifs(filepath, std::ios::in);
@@ -640,40 +641,40 @@ inline std::optional<value> open(const path_t& filepath, bool check_bom, bool wi
     return opt;
 }
 
-template <typename parsing_t>
+MEOJSON_EXPORT template <typename parsing_t>
 inline std::optional<value> parsec(const parsing_t& content)
 {
     return parser<true, parsing_t>::parse(content);
 }
 
-inline std::optional<value> parsec(const char* content)
+MEOJSON_EXPORT inline std::optional<value> parsec(const char* content)
 {
     return parsec(std::string_view { content });
 }
 
-namespace literals
+MEOJSON_EXPORT namespace literals
 {
-inline value operator""_json(const char* str, size_t len)
-{
-    return operator""_jvalue(str, len);
-}
+    inline value operator""_json(const char* str, size_t len)
+    {
+        return operator""_jvalue(str, len);
+    }
 
-inline value operator""_jvalue(const char* str, size_t len)
-{
-    return parse(std::string_view(str, len)).value_or(value());
-}
+    inline value operator""_jvalue(const char* str, size_t len)
+    {
+        return parse(std::string_view(str, len)).value_or(value());
+    }
 
-inline array operator""_jarray(const char* str, size_t len)
-{
-    auto val = parse(std::string_view(str, len)).value_or(value());
-    return val.is_array() ? val.as_array() : array();
-}
+    inline array operator""_jarray(const char* str, size_t len)
+    {
+        auto val = parse(std::string_view(str, len)).value_or(value());
+        return val.is_array() ? val.as_array() : array();
+    }
 
-inline object operator""_jobject(const char* str, size_t len)
-{
-    auto val = parse(std::string_view(str, len)).value_or(value());
-    return val.is_object() ? val.as_object() : object();
-}
+    inline object operator""_jobject(const char* str, size_t len)
+    {
+        auto val = parse(std::string_view(str, len)).value_or(value());
+        return val.is_object() ? val.as_object() : object();
+    }
 } // namespace literals
 
 inline const value invalid_value()

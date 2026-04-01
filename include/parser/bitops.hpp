@@ -3,7 +3,9 @@
 #pragma once
 
 #if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+#if !defined(MEOJSON_MODULE)
 #include <bit>
+#endif
 
 namespace json::_bitops
 {

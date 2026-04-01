@@ -7,7 +7,7 @@
 #include "exception.hpp"
 #include "utils.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline value::value() = default;

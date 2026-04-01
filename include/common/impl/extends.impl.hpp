@@ -3,7 +3,7 @@
 #include "../value.hpp"
 #include "extends.hpp"
 
-namespace MEOJSON_NAMESPACE::ext
+namespace json::ext
 {
 
 template <typename T>

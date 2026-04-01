@@ -1,11 +1,13 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <string>
 #include <type_traits>
+#endif
 
 #include "../forward.hpp"
 
-namespace MEOJSON_NAMESPACE::_utils
+namespace json::_utils
 {
 
 template <typename T>

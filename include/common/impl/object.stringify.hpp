@@ -4,7 +4,7 @@
 #include "../value.hpp"
 #include "utils.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline std::string object::to_string() const

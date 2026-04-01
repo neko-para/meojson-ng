@@ -6,7 +6,7 @@
 #include "enum_reflection.hpp"
 #include "extends.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline bool value::valid() const noexcept

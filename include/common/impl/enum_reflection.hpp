@@ -1,10 +1,12 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <array>
 #include <optional>
 #include <string_view>
 #include <type_traits>
 #include <utility>
+#endif
 
 #ifndef MEOJSON_ENUM_REFLECTION_MIN_ENUMS
 #define MEOJSON_ENUM_REFLECTION_MIN_ENUMS -128

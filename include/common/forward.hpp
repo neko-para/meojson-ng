@@ -1,22 +1,24 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <map>
 #include <memory>
 #include <string>
 #include <type_traits>
 #include <variant>
 #include <vector>
-
-#ifndef MEOJSON_NAMESPACE
-#define MEOJSON_NAMESPACE json
 #endif
 
-namespace MEOJSON_NAMESPACE
+#ifndef MEOJSON_EXPORT
+#define MEOJSON_EXPORT
+#endif
+
+namespace json
 {
 
-class value;
-class array;
-class object;
+MEOJSON_EXPORT class value;
+MEOJSON_EXPORT class array;
+MEOJSON_EXPORT class object;
 
 using array_ptr = std::unique_ptr<array>;
 using object_ptr = std::unique_ptr<object>;

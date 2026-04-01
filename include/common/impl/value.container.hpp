@@ -4,7 +4,7 @@
 #include "../object.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline bool value::contains(size_t pos) const noexcept

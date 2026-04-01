@@ -3,7 +3,7 @@
 #include "../array.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline bool array::empty() const noexcept

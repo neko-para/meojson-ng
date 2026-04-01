@@ -1,12 +1,14 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <algorithm>
 #include <iterator>
+#endif
 
 #include "../array.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 template <typename T>

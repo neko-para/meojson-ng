@@ -3,7 +3,7 @@
 #include "../forward.hpp"
 #include "concepts.hpp"
 
-namespace MEOJSON_NAMESPACE::ext
+namespace json::ext
 {
 
 template <typename T>

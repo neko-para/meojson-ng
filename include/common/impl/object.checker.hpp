@@ -3,7 +3,7 @@
 #include "../object.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 template <ext::has_check_json_object T>

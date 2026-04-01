@@ -2,9 +2,11 @@
 
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <string>
 #include <type_traits>
 #include <utility>
+#endif
 
 #include "../common/types.hpp"
 

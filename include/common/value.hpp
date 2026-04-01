@@ -1,18 +1,19 @@
 #pragma once
 
-#include "forward.hpp"
-
+#if !defined(MEOJSON_MODULE)
 #include <optional>
 #include <string>
 #include <variant>
+#endif
 
+#include "forward.hpp"
 #include "impl/concepts.hpp"
 #include "impl/extends.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
-class value
+MEOJSON_EXPORT class value
 {
     friend class array;
     friend class object;

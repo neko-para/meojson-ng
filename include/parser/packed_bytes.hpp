@@ -2,9 +2,11 @@
 
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <cstdint>
 #include <cstring>
 #include <type_traits>
+#endif
 
 #include "bitops.hpp"
 

@@ -4,7 +4,7 @@
 #include "../object.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 template <typename T>

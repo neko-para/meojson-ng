@@ -1,10 +1,12 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <exception>
+#endif
 
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 struct exception : public std::exception

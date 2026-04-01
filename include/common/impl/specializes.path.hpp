@@ -1,11 +1,13 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <filesystem>
+#endif
 
 #include "../value.hpp"
 #include "extends.hpp"
 
-namespace MEOJSON_NAMESPACE::ext
+namespace json::ext
 {
 
 #if defined(MEOJSON_FS_PATH_EXTENSION)

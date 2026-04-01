@@ -6,7 +6,7 @@
 #include "exception.hpp"
 #include "utils.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline std::string value::to_string() const

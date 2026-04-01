@@ -4,10 +4,14 @@
 
 #include "packed_bytes.hpp"
 
+#if !defined(MEOJSON_MODULE)
 #include <emmintrin.h>
+#endif
 #if defined(__SSE4_1__) || defined(__AVX2__) || defined(_MSC_VER)
 // MSVC enables all SSE4.1 intrinsics by default
+#if !defined(MEOJSON_MODULE)
 #include <smmintrin.h>
+#endif
 #endif
 
 namespace json::_packed_bytes

@@ -3,7 +3,7 @@
 #include "../array.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline std::string array::to_string() const

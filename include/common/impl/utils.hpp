@@ -1,12 +1,14 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <iomanip>
 #include <limits>
 #include <sstream>
 #include <string>
 #include <string_view>
+#endif
 
-namespace MEOJSON_NAMESPACE::_utils
+namespace json::_utils
 {
 
 inline std::string escape_string(const std::string& str)

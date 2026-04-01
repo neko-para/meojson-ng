@@ -4,7 +4,7 @@
 #include "../value.hpp"
 #include "exception.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 inline bool object::empty() const noexcept

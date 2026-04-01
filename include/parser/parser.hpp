@@ -2,10 +2,12 @@
 
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <cctype>
 #include <fstream>
 #include <optional>
 #include <string>
+#endif
 
 #include "../common/types.hpp"
 #include "packed_bytes.hpp"
@@ -64,29 +66,29 @@ private:
 // *      utils declare      *
 // ***************************
 
-template <typename parsing_t>
+MEOJSON_EXPORT template <typename parsing_t>
 std::optional<value> parse(const parsing_t& content);
 
-std::optional<value> parse(const char* content);
+MEOJSON_EXPORT std::optional<value> parse(const char* content);
 
-template <typename parsing_t>
+MEOJSON_EXPORT template <typename parsing_t>
 std::optional<value> parsec(const parsing_t& content);
 
-std::optional<value> parsec(const char* content);
+MEOJSON_EXPORT std::optional<value> parsec(const char* content);
 
-std::optional<value> parse(std::istream& istream, bool check_bom = false, bool with_commets = false);
+MEOJSON_EXPORT std::optional<value> parse(std::istream& istream, bool check_bom = false, bool with_commets = false);
 
-template <typename path_t>
+MEOJSON_EXPORT template <typename path_t>
 std::optional<value> open(const path_t& path, bool check_bom = false, bool with_commets = false);
 
-namespace literals
+MEOJSON_EXPORT namespace literals
 {
-value operator""_json(const char* str, size_t len);
-value operator""_jvalue(const char* str, size_t len);
+    value operator""_json(const char* str, size_t len);
+    value operator""_jvalue(const char* str, size_t len);
 
-array operator""_jarray(const char* str, size_t len);
+    array operator""_jarray(const char* str, size_t len);
 
-object operator""_jobject(const char* str, size_t len);
+    object operator""_jobject(const char* str, size_t len);
 }
 
 inline const value invalid_value();

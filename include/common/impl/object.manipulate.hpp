@@ -3,7 +3,7 @@
 #include "../object.hpp"
 #include "../value.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
 template <typename T, all_object_key K>

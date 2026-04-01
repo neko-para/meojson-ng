@@ -1,16 +1,18 @@
 #pragma once
 
+#if !defined(MEOJSON_MODULE)
 #include <map>
 #include <optional>
 #include <string>
+#endif
 
 #include "forward.hpp"
 #include "impl/extends.hpp"
 
-namespace MEOJSON_NAMESPACE
+namespace json
 {
 
-class object
+MEOJSON_EXPORT class object
 {
     friend class value;
     friend class array;
@@ -47,6 +49,8 @@ public:
 
     template <ext::has_to_json_object T>
     object(T&& val);
+
+    object(raw_object&& args);
 
 #pragma mark - Checker
 public:
