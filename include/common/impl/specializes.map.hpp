@@ -2,7 +2,7 @@
 
 #include "../object.hpp"
 #include "../value.hpp"
-#include "extends.hpp"
+#include "extends.impl.hpp"
 
 namespace json::ext
 {
@@ -11,10 +11,13 @@ template <_utils::is_map T>
 class jsonization<T>
 {
 public:
+    using inner_type = T::mapped_type;
+
     bool check_json(const object& obj) const noexcept
+    requires can_check_value<inner_type>
     {
         for (const auto& [_, val] : obj) {
-            if (!val.is<typename T::mapped_type>()) {
+            if (!val.is<inner_type>()) {
                 return false;
             }
         }
@@ -22,6 +25,7 @@ public:
     }
 
     object to_json(const T& t) const
+    requires can_to_value<inner_type>
     {
         object obj;
         for (const auto& [key, val] : t) {
@@ -31,6 +35,7 @@ public:
     }
 
     bool from_json(const object& obj, T& t) const
+    requires can_from_value<inner_type>
     {
         if constexpr (_utils::has_clear<T>) {
             t.clear();
@@ -51,6 +56,7 @@ public:
     }
 
     object to_json(T&& t) const
+    requires can_to_value<inner_type>
     {
         object obj;
         for (auto& [key, val] : t) {
@@ -60,6 +66,7 @@ public:
     }
 
     bool from_json(object&& obj, T& t) const
+    requires can_from_value<inner_type>
     {
         if constexpr (_utils::has_clear<T>) {
             t.clear();

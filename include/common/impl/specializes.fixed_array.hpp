@@ -2,7 +2,7 @@
 
 #include "../array.hpp"
 #include "../value.hpp"
-#include "extends.hpp"
+#include "extends.impl.hpp"
 
 namespace json::ext
 {
@@ -12,14 +12,16 @@ class jsonization<T>
 {
 public:
     constexpr static size_t N = _utils::fixed_array_size<T>;
+    using inner_type = T::value_type;
 
     bool check_json(const array& arr) const noexcept
+    requires can_check_value<inner_type>
     {
         if (arr.size() != N) {
             return false;
         }
         for (const auto& val : arr) {
-            if (!val.is<typename T::value_type>()) {
+            if (!val.is<inner_type>()) {
                 return false;
             }
         }
@@ -27,6 +29,7 @@ public:
     }
 
     array to_json(const T& t) const
+    requires can_to_value<inner_type>
     {
         array arr;
         arr.reserve(N);
@@ -37,17 +40,19 @@ public:
     }
 
     bool from_json(const array& arr, T& t) const
+    requires can_from_value<inner_type>
     {
         if (arr.size() != N) {
             return false;
         }
         for (size_t i = 0; i < N; i++) {
-            t.at(i) = arr[i].as<typename T::value_type>();
+            t.at(i) = arr[i].as<inner_type>();
         }
         return true;
     }
 
     array to_json(T&& t) const
+    requires can_to_value<inner_type>
     {
         array arr;
         arr.reserve(N);
@@ -58,12 +63,13 @@ public:
     }
 
     bool from_json(array&& arr, T& t) const
+    requires can_from_value<inner_type>
     {
         if (arr.size() != N) {
             return false;
         }
         for (size_t i = 0; i < N; i++) {
-            t.at(i) = std::move(arr[i]).as<typename T::value_type>();
+            t.at(i) = std::move(arr[i]).as<inner_type>();
         }
         return true;
     }

@@ -2,7 +2,7 @@
 
 #include "../array.hpp"
 #include "../value.hpp"
-#include "extends.hpp"
+#include "extends.impl.hpp"
 
 namespace json::ext
 {
@@ -15,6 +15,7 @@ public:
     static_assert(N > 0);
 
     bool check_json(const value& val) const noexcept
+    requires variant_can_check_value<T>
     {
         return [&]<size_t... Is>(std::index_sequence<Is...>) {
             return (val.is<std::variant_alternative_t<Is, T>>() || ...);
@@ -22,6 +23,7 @@ public:
     }
 
     value to_json(const T& t) const
+    requires variant_can_to_value<T>
     {
         value val;
         [&]<size_t... Is>(std::index_sequence<Is...>) {
@@ -32,6 +34,7 @@ public:
     }
 
     bool from_json(const value& val, T& t) const
+    requires variant_can_from_value<T>
     {
         return [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
@@ -40,6 +43,7 @@ public:
     }
 
     value to_json(T&& t) const
+    requires variant_can_to_value<T>
     {
         value val;
         [&]<size_t... Is>(std::index_sequence<Is...>) {
@@ -50,6 +54,7 @@ public:
     }
 
     bool from_json(value&& val, T& t) const
+    requires variant_can_from_value<T>
     {
         return [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;

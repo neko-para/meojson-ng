@@ -2,7 +2,7 @@
 
 #include "../array.hpp"
 #include "../value.hpp"
-#include "extends.hpp"
+#include "extends.impl.hpp"
 
 namespace json::ext
 {
@@ -15,6 +15,7 @@ public:
     static_assert(N > 0);
 
     bool check_json(const array& arr) const noexcept
+    requires tuple_like_can_check_value<T>
     {
         if (arr.size() != N) {
             return false;
@@ -25,6 +26,7 @@ public:
     }
 
     array to_json(const T& t) const
+    requires tuple_like_can_to_value<T>
     {
         array arr;
         arr.reserve(N);
@@ -36,6 +38,7 @@ public:
     }
 
     bool from_json(const array& arr, T& t) const
+    requires tuple_like_can_from_value<T>
     {
         if (arr.size() != N) {
             return false;
@@ -48,6 +51,7 @@ public:
     }
 
     array to_json(T&& t) const
+    requires tuple_like_can_to_value<T>
     {
         array arr;
         arr.reserve(N);
@@ -59,6 +63,7 @@ public:
     }
 
     bool from_json(array&& arr, T& t) const
+    requires tuple_like_can_from_value<T>
     {
         if (arr.size() != N) {
             return false;
