@@ -1,7 +1,9 @@
 #pragma once
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 4068)
+#endif
 
 // IWYU pragma: begin_exports
 
@@ -16,4 +18,6 @@
 
 // IWYU pragma: end_exports
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
