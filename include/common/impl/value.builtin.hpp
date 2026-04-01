@@ -3,6 +3,7 @@
 #include "../array.hpp"
 #include "../object.hpp"
 #include "../value.hpp"
+#include "enum_reflection.hpp"
 #include "exception.hpp"
 #include "utils.hpp"
 
@@ -116,8 +117,17 @@ inline value::value(std::initializer_list<typename raw_object::value_type> list)
 template <typename enum_t>
 requires std::is_enum_v<enum_t>
 inline value::value(enum_t num)
+#ifdef MEOJSON_ENUM_AS_NUMBER
     : value(static_cast<std::underlying_type_t<enum_t>>(num))
+#else
+    : value(_reflection::enum_to_string(num))
+#endif
 {
+#ifndef MEOJSON_ENUM_AS_NUMBER
+    if (as_string_unsafe().empty()) {
+        throw exception { };
+    }
+#endif
 }
 
 template <ext::has_to_json T>

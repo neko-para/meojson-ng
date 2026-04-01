@@ -3,6 +3,7 @@
 #include "../array.hpp"
 #include "../object.hpp"
 #include "../value.hpp"
+#include "enum_reflection.hpp"
 #include "exception.hpp"
 #include "extends.hpp"
 #include "utils.hpp"
@@ -326,10 +327,20 @@ template <typename enum_t>
 requires std::is_enum_v<enum_t>
 inline value::operator enum_t() const
 {
-    if (!is_number()) {
+    if (is_string()) {
+        if (auto enum_opt = _reflection::string_to_enum<enum_t>(as_string_unsafe()); enum_opt) {
+            return *enum_opt;
+        }
+        else {
+            throw exception { };
+        }
+    }
+    else if (is_number()) {
+        return static_cast<enum_t>(static_cast<std::underlying_type_t<enum_t>>(*this));
+    }
+    else {
         throw_type_error(value_type::number);
     }
-    return static_cast<enum_t>(static_cast<std::underlying_type_t<enum_t>>(*this));
 }
 
 template <typename T>
