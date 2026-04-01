@@ -186,6 +186,21 @@ inline std::string value::as_string() &&
     return std::move(as_basic_type_str());
 }
 
+inline const std::string& value::as_string_unsafe() const& noexcept
+{
+    return as_basic_type_str_unsafe();
+}
+
+inline std::string& value::as_string_unsafe() & noexcept
+{
+    return as_basic_type_str_unsafe();
+}
+
+inline std::string value::as_string_unsafe() && noexcept
+{
+    return std::move(as_basic_type_str_unsafe());
+}
+
 inline value::operator std::string() const&
 {
     return as_string();

@@ -138,6 +138,9 @@ public:
     const std::string& as_string() const&;
     std::string& as_string() &;
     std::string as_string() &&;
+    const std::string& as_string_unsafe() const& noexcept;
+    std::string& as_string_unsafe() & noexcept;
+    std::string as_string_unsafe() && noexcept;
     explicit operator std::string() const&;
     explicit operator std::string() &&;
 
