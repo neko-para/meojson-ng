@@ -7,7 +7,7 @@
 namespace MEOJSON_NAMESPACE
 {
 
-struct exception : public std::exception_ptr
+struct exception : public std::exception
 {
 };
 

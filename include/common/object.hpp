@@ -126,6 +126,13 @@ public:
     template <typename T = value, all_object_key K = key_type>
     std::optional<T> find(const K& key) &&;
 
+    template <all_object_key K, typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) const&;
+    template <all_object_key K, typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) &&;
+
     object operator|(const object& rhs) const&;
     object operator|(object&& rhs) const&;
     object operator|(const object& rhs) &&;

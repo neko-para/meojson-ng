@@ -37,6 +37,30 @@ inline std::optional<T> array::find(size_t pos) &&
     }
 }
 
+template <std::integral K, typename... Ks>
+requires(sizeof...(Ks) > 0)
+inline std::decay_t<_utils::last_of_t<Ks...>> array::get(const K& key, Ks&&... keys) const&
+{
+    if (exists(key)) {
+        return _data[key].get(std::forward<Ks>(keys)...);
+    }
+    else {
+        return (std::forward<Ks>(keys), ...);
+    }
+}
+
+template <std::integral K, typename... Ks>
+requires(sizeof...(Ks) > 0)
+inline std::decay_t<_utils::last_of_t<Ks...>> array::get(const K& key, Ks&&... keys) &&
+{
+    if (exists(key)) {
+        return std::move(_data[key]).get(std::forward<Ks>(keys)...);
+    }
+    else {
+        return (std::forward<Ks>(keys), ...);
+    }
+}
+
 inline array array::operator+(const array& rhs) const&
 {
     array arr;

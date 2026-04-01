@@ -77,6 +77,30 @@ template <is_nullable T>
 using nullable_value_t = std::decay_t<decltype(*std::declval<T>())>;
 
 template <typename T>
+constexpr bool is_optional_v = false;
+template <typename T>
+constexpr bool is_optional_v<std::optional<T>> = true;
+
+template <typename T>
+concept is_optional = is_optional_v<T>;
+
+template <typename T>
+constexpr bool is_shared_ptr_v = false;
+template <typename T>
+constexpr bool is_shared_ptr_v<std::shared_ptr<T>> = true;
+
+template <typename T>
+concept is_shared_ptr = is_shared_ptr_v<T>;
+
+template <typename T>
+constexpr bool is_unique_ptr_v = false;
+template <typename T>
+constexpr bool is_unique_ptr_v<std::unique_ptr<T>> = true;
+
+template <typename T>
+concept is_unique_ptr = is_unique_ptr_v<T>;
+
+template <typename T>
 constexpr bool is_initializer_list_v = false;
 template <typename T>
 constexpr bool is_initializer_list_v<std::initializer_list<T>> = true;
@@ -120,5 +144,8 @@ concept is_builtin_primitive = is_builtin_primitive_without_string<T> || std::is
 
 template <typename T, typename... Us>
 concept same_as_one_of = (std::same_as<T, Us> || ...);
+
+template <typename... Ts>
+using last_of_t = std::tuple_element_t<sizeof...(Ts) - 1, std::tuple<Ts...>>;
 
 }

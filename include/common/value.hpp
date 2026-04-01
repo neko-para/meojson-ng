@@ -221,6 +221,13 @@ public:
     template <typename T = value, all_object_key K = raw_object::key_type>
     std::optional<T> find(const K& key) &&;
 
+    template <typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(Ks&&... keys) const&;
+    template <typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(Ks&&... keys) &&;
+
     value operator+(const array& rhs) const&;
     value operator+(array&& rhs) const&;
     value operator+(const array& rhs) &&;
@@ -236,6 +243,16 @@ public:
 
     value& operator|=(const object& rhs);
     value& operator|=(object&& rhs);
+
+private:
+    template <typename Ret, typename K, typename... Ks>
+    std::decay_t<Ret> get_helper(Ret&& def, K&& key, Ks&&... keys) const&;
+    template <typename Ret, typename K, typename... Ks>
+    std::decay_t<Ret> get_helper(Ret&& def, K&& key, Ks&&... keys) &&;
+    template <typename Ret>
+    std::decay_t<Ret> get_helper(Ret&& def) const&;
+    template <typename Ret>
+    std::decay_t<Ret> get_helper(Ret&& def) &&;
 
 #pragma mark - Stringify
 public:

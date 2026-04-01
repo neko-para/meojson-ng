@@ -118,6 +118,13 @@ public:
     template <typename T = value>
     std::optional<T> find(size_t pos) &&;
 
+    template <std::integral K, typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) const&;
+    template <std::integral K, typename... Ks>
+    requires(sizeof...(Ks) > 0)
+    std::decay_t<_utils::last_of_t<Ks...>> get(const K& key, Ks&&... keys) &&;
+
     array operator+(const array& rhs) const&;
     array operator+(array&& rhs) const&;
     array operator+(const array& rhs) &&;
