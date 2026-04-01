@@ -326,7 +326,7 @@ bool jsonizing()
 
     json::array movable_arr = { 1, json::array { 2, 3 } };
     auto movable_arr_output = std::move(movable_arr).as<std::tuple<int, json::array>>();
-    if (!movable_arr.empty()) {
+    if (!movable_arr.empty() && !movable_arr[1].empty()) {
         std::cerr << "not moved" << std::endl;
         return false;
     }

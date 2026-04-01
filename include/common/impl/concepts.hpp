@@ -15,6 +15,9 @@ using iter_value_t = typename std::iterator_traits<std::decay_t<T>>::value_type;
 template <typename R>
 using range_value_t = iter_value_t<iterator_t<R>>;
 
+template <typename T, typename... Us>
+concept same_as_one_of = (std::same_as<T, Us> || ...);
+
 template <typename T>
 concept is_string = requires {
     typename T::traits_type;
@@ -140,16 +143,15 @@ concept is_builtin_primitive_without_string = std::is_same_v<T, nullptr_t> || st
                                               || std::integral<T> || std::floating_point<T> || std::is_enum_v<T>;
 
 template <typename T>
-concept is_builtin_primitive = is_builtin_primitive_without_string<T> || std::is_constructible_v<std::string, T>;
-
-template <typename T, typename... Us>
-concept same_as_one_of = (std::same_as<T, Us> || ...);
+concept is_builtin_primitive =
+    is_builtin_primitive_without_string<T> || _utils::same_as_one_of<T, std::string, std::string_view, const char*>;
 
 template <typename... Ts>
 using last_of_t = std::tuple_element_t<sizeof...(Ts) - 1, std::tuple<Ts...>>;
 
 template <typename T>
-using wrap_string_t = std::conditional_t<std::is_constructible_v<std::string, T>, std::string, T>;
+using wrap_string_t =
+    std::conditional_t<std::is_constructible_v<std::string, T> && !_utils::same_as_one_of<T, value, array, object>, std::string, T>;
 
 template <typename... Ts>
 using get_access_t = wrap_string_t<std::decay_t<last_of_t<Ts...>>>;

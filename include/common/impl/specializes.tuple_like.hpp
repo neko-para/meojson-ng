@@ -30,7 +30,7 @@ public:
         arr.reserve(N);
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
-            ((arr[Is] = get<Is>(t)), ...);
+            ((arr.push_back(get<Is>(t))), ...);
         }(std::make_index_sequence<N>());
         return arr;
     }
@@ -53,7 +53,7 @@ public:
         arr.reserve(N);
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
-            ((arr[Is] = get<Is>(std::move(t))), ...);
+            ((arr.push_back(get<Is>(std::move(t)))), ...);
         }(std::make_index_sequence<N>());
         return arr;
     }
@@ -65,7 +65,7 @@ public:
         }
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
-            ((get<Is>(t) = std::move(arr)[Is].as<std::tuple_element_t<Is, T>>()), ...);
+            ((get<Is>(t) = std::move(arr[Is]).as<std::tuple_element_t<Is, T>>()), ...);
         }(std::make_index_sequence<N>());
         return true;
     }

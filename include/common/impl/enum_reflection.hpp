@@ -166,7 +166,7 @@ struct enum_range
 };
 
 template <typename E, int... Is>
-constexpr auto get_enum_names(std::integer_sequence<int, Is...>)
+constexpr auto get_enum_names(std::integer_sequence<int, Is...>) noexcept
 {
     constexpr int min = enum_range<E>::min;
     return std::array<std::string_view, sizeof...(Is)> { { (
@@ -184,7 +184,7 @@ struct enum_name_storage
 };
 
 template <typename E>
-constexpr std::string_view enum_to_string(E val)
+constexpr std::string_view enum_to_string(E val) noexcept
 {
     constexpr int min = enum_range<E>::min;
     constexpr int max = enum_range<E>::max;
@@ -199,7 +199,7 @@ constexpr std::string_view enum_to_string(E val)
     return { };
 }
 
-constexpr bool iequals(std::string_view a, std::string_view b)
+constexpr bool iequals(std::string_view a, std::string_view b) noexcept
 {
     if (a.size() != b.size()) {
         return false;
@@ -221,7 +221,7 @@ constexpr bool iequals(std::string_view a, std::string_view b)
 }
 
 template <typename E>
-std::optional<E> string_to_enum(std::string_view str)
+std::optional<E> string_to_enum(std::string_view str) noexcept
 {
     constexpr int min = enum_range<E>::min;
     constexpr int range = enum_name_storage<E>::range;

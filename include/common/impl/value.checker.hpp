@@ -3,6 +3,7 @@
 #include "../array.hpp"
 #include "../object.hpp"
 #include "../value.hpp"
+#include "enum_reflection.hpp"
 #include "extends.hpp"
 
 namespace MEOJSON_NAMESPACE
@@ -86,6 +87,9 @@ inline bool value::is() const noexcept
         return is_number();
     }
     else if constexpr (std::is_enum_v<T>) {
+        if (is_string()) {
+            return _reflection::string_to_enum<T>(as_string_view()).has_value();
+        }
         return is_number();
     }
     else if constexpr (std::is_constructible_v<std::string, T>) {

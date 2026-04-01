@@ -235,6 +235,11 @@ inline const array& value::as_array() const&
 
 inline array& value::as_array() &
 {
+    if (empty()) {
+        _type = value_type::array;
+        _data = std::make_unique<array>();
+        return as_array_unsafe();
+    }
     if (!is_array()) {
         throw_type_error(value_type::array);
     }
@@ -284,6 +289,11 @@ inline const object& value::as_object() const&
 
 inline object& value::as_object() &
 {
+    if (empty()) {
+        _type = value_type::object;
+        _data = std::make_unique<object>();
+        return as_object_unsafe();
+    }
     if (!is_object()) {
         throw_type_error(value_type::object);
     }

@@ -29,12 +29,12 @@ concept has_check_json_value_in_member = requires(T t, value v) {
 template <typename T>
 concept has_check_json_array_in_member = requires(T t, array v) {
     { t.check_json(v) } noexcept -> std::same_as<bool>;
-};
+} && !has_check_json_value_in_member<T>;
 
 template <typename T>
 concept has_check_json_object_in_member = requires(T t, object v) {
     { t.check_json(v) } noexcept -> std::same_as<bool>;
-};
+} && !has_check_json_value_in_member<T>;
 
 template <typename T>
 concept has_check_json_value_in_spec = requires(jsonization<T> j, value v) {
@@ -44,12 +44,12 @@ concept has_check_json_value_in_spec = requires(jsonization<T> j, value v) {
 template <typename T>
 concept has_check_json_array_in_spec = requires(jsonization<T> j, array v) {
     { j.check_json(v) } noexcept -> std::same_as<bool>;
-};
+} && !has_check_json_value_in_spec<T>;
 
 template <typename T>
 concept has_check_json_object_in_spec = requires(jsonization<T> j, object v) {
     { j.check_json(v) } noexcept -> std::same_as<bool>;
-};
+} && !has_check_json_value_in_spec<T>;
 
 #pragma mark - to_json
 
@@ -73,12 +73,12 @@ concept has_from_json_value_in_member = requires(T t, value v) {
 template <typename T>
 concept has_from_json_array_in_member = requires(T t, array v) {
     { t.from_json(v) } -> std::same_as<bool>;
-};
+} && !has_from_json_value_in_member<T>;
 
 template <typename T>
 concept has_from_json_object_in_member = requires(T t, object v) {
     { t.from_json(v) } -> std::same_as<bool>;
-};
+} && !has_from_json_value_in_member<T>;
 
 template <typename T>
 concept has_from_json_value_in_spec = requires(jsonization<T> j, value v, T t) {
@@ -88,12 +88,12 @@ concept has_from_json_value_in_spec = requires(jsonization<T> j, value v, T t) {
 template <typename T>
 concept has_from_json_array_in_spec = requires(jsonization<T> j, array v, T t) {
     { j.from_json(v, t) } -> std::same_as<bool>;
-};
+} && !has_from_json_value_in_spec<T>;
 
 template <typename T>
 concept has_from_json_object_in_spec = requires(jsonization<T> j, object v, T t) {
     { j.from_json(v, t) } -> std::same_as<bool>;
-};
+} && !has_from_json_value_in_spec<T>;
 
 #pragma mark - jsonization_wrapper
 

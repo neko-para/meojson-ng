@@ -26,7 +26,7 @@ public:
         value val;
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
-            ((t.index() == Is ? (val = get<Is>(t), true) : false) || ...);
+            std::ignore = ((t.index() == Is ? (val = get<Is>(t), true) : false) || ...);
         }(std::make_index_sequence<N>());
         return val;
     }
@@ -44,7 +44,7 @@ public:
         value val;
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
-            ((t.index() == Is ? (val = get<Is>(std::move(t)), true) : false) || ...);
+            std::ignore = ((t.index() == Is ? (val = get<Is>(std::move(t)), true) : false) || ...);
         }(std::make_index_sequence<N>());
         return val;
     }
