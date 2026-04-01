@@ -48,7 +48,7 @@ struct packed_bytes_trait_sse
 
     __packed_bytes_strong_inline static bool is_all_zero(value_type x)
     {
-#if defined(__SSE4_1__) || defined(__AVX2__) || defined(_MSC_VER)
+#if defined(__SSE4_1__) || defined(__AVX2__) || (defined(_MSC_VER) && !defined(__clang__))
         // SSE4.1 path
         return !!_mm_testz_si128(x, x);
 #else
