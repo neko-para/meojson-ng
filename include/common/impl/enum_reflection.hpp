@@ -15,8 +15,6 @@
 #define MEOJSON_ENUM_REFLECTION_MAX_ENUMS 128
 #endif
 
-#define MEOJSON_ENUM_RANGE(min_enum, max_enum) _MEOJSON_ENUM_MIN = min_enum, _MEOJSON_ENUM_MAX = max_enum
-
 namespace json
 {
 namespace _reflection
@@ -112,59 +110,31 @@ constexpr bool is_valid() noexcept
     return true;
 }
 
-// 检测枚举类型是否存在 _MEOJSON_ENUM_MIN
-template <typename E, typename = void>
-struct has_enum_min : std::false_type
-{
+template <typename E>
+concept has_enum_min = requires {
+    { E::_MEOJSON_ENUM_MIN };
 };
 
 template <typename E>
-struct has_enum_min<E, std::void_t<decltype(E::_MEOJSON_ENUM_MIN)>> : std::true_type
-{
-};
-
-// 检测枚举类型是否存在 _MEOJSON_ENUM_MAX
-template <typename E, typename = void>
-struct has_enum_max : std::false_type
-{
+concept has_enum_max = requires {
+    { E::_MEOJSON_ENUM_MAX };
 };
 
 template <typename E>
-struct has_enum_max<E, std::void_t<decltype(E::_MEOJSON_ENUM_MAX)>> : std::true_type
-{
-};
-
-// 获取枚举最小值
-template <typename E, bool = has_enum_min<E>::value>
-struct get_enum_min
-{
-    static constexpr int value = MEOJSON_ENUM_REFLECTION_MIN_ENUMS;
-};
+constexpr int get_enum_min = MEOJSON_ENUM_REFLECTION_MIN_ENUMS;
+template <has_enum_min E>
+constexpr int get_enum_min<E> = static_cast<int>(E::_MEOJSON_ENUM_MIN);
 
 template <typename E>
-struct get_enum_min<E, true>
-{
-    static constexpr int value = static_cast<int>(E::_MEOJSON_ENUM_MIN);
-};
-
-// 获取枚举最大值
-template <typename E, bool = has_enum_max<E>::value>
-struct get_enum_max
-{
-    static constexpr int value = MEOJSON_ENUM_REFLECTION_MAX_ENUMS;
-};
-
-template <typename E>
-struct get_enum_max<E, true>
-{
-    static constexpr int value = static_cast<int>(E::_MEOJSON_ENUM_MAX);
-};
+constexpr int get_enum_max = MEOJSON_ENUM_REFLECTION_MAX_ENUMS;
+template <has_enum_max E>
+constexpr int get_enum_max<E> = static_cast<int>(E::_MEOJSON_ENUM_MAX);
 
 template <typename E>
 struct enum_range
 {
-    static constexpr int min = get_enum_min<E>::value;
-    static constexpr int max = get_enum_max<E>::value;
+    static constexpr int min = get_enum_min<E>;
+    static constexpr int max = get_enum_max<E>;
 };
 
 template <typename E, int... Is>

@@ -225,7 +225,7 @@ inline value parser<accept_jsonc, parsing_t, accel_traits>::parse_array()
         return invalid_value();
     }
 
-    return array { std::move(result) };
+    return array(std::move(result));
 }
 
 template <bool accept_jsonc, typename parsing_t, typename accel_traits>

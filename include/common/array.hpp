@@ -49,7 +49,7 @@ public:
     template <ext::has_to_json_array T>
     array(T&& val);
 
-    array(raw_array&& args);
+    explicit array(raw_array&& args);
 
 #pragma mark - Checker
 public:

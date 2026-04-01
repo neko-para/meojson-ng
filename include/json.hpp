@@ -12,6 +12,8 @@
 #include "common/impl.hpp"
 #include "parser/parser_impl.hpp"
 
+#include "macros.hpp"
+
 // IWYU pragma: end_exports
 
 #pragma warning(pop)

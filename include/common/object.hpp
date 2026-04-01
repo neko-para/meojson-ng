@@ -50,7 +50,7 @@ public:
     template <ext::has_to_json_object T>
     object(T&& val);
 
-    object(raw_object&& args);
+    explicit object(raw_object&& args);
 
 #pragma mark - Checker
 public:

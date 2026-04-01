@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "macros.hpp"
+
 import meojson;
 
 using namespace json;
