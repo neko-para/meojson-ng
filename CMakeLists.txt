@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+if(MSVC)
+  add_compile_options(/utf-8)
+endif()
 if(APPLE)
   set(CMAKE_OSX_SYSROOT
       "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk"
