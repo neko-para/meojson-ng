@@ -16,6 +16,7 @@ struct exception : public std::exception
     std::string _what;
 
     template <typename... args_t>
+    requires std::is_constructible_v<std::string, args_t&&...>
     exception(args_t&&... args)
         : _what(std::forward<args_t>(args)...)
     {
