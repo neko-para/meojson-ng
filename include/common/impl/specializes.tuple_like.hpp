@@ -2,6 +2,7 @@
 
 #include "../array.hpp"
 #include "../value.hpp"
+#include "exception.hpp"
 #include "extends.impl.hpp"
 
 namespace json::ext
@@ -41,7 +42,7 @@ public:
     requires tuple_like_can_from_value<T>
     {
         if (arr.size() != N) {
-            return false;
+            throw type_error { _reflection::type_name<T>(), value::value_type::array, arr };
         }
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;
@@ -66,7 +67,7 @@ public:
     requires tuple_like_can_from_value<T>
     {
         if (arr.size() != N) {
-            return false;
+            throw type_error { _reflection::type_name<T>(), value::value_type::array, arr };
         }
         [&]<size_t... Is>(std::index_sequence<Is...>) {
             using std::get;

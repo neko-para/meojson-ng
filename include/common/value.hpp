@@ -92,6 +92,8 @@ public:
     bool valid() const noexcept;
     bool empty() const noexcept;
     value_type type() const noexcept;
+    std::string_view type_name() const noexcept;
+    std::string value_info() const noexcept;
 
     bool is_null() const noexcept;
     bool is_boolean() const noexcept;
@@ -277,8 +279,7 @@ private:
 
 private:
     static raw_value deep_copy(const raw_value& src);
-
-    [[noreturn]] void throw_type_error(value_type expected) const;
+    [[noreturn]] void throw_type_error(std::string_view target, value_type expected) const;
 
     const std::string& as_basic_type_str() const;
     std::string& as_basic_type_str();

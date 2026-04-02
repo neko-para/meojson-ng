@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../value.hpp"
+#include "enum_reflection.hpp"
 #include "extends.hpp"
 
 namespace json::ext
@@ -154,13 +155,13 @@ requires has_from_json_value_in_member<T> || has_from_json_array_in_member<T> ||
 {
     if constexpr (has_from_json_array_in_member<T>) {
         if (!val.is_array()) {
-            val.throw_type_error(value::value_type::array);
+            val.throw_type_error(_reflection::type_name<T>(), value::value_type::array);
         }
         return t.from_json(std::forward<U>(val).as_array_unsafe());
     }
     else if constexpr (has_from_json_object_in_member<T>) {
         if (!val.is_object()) {
-            val.throw_type_error(value::value_type::object);
+            val.throw_type_error(_reflection::type_name<T>(), value::value_type::object);
         }
         return t.from_json(std::forward<U>(val).as_object_unsafe());
     }
@@ -169,13 +170,13 @@ requires has_from_json_value_in_member<T> || has_from_json_array_in_member<T> ||
     }
     else if constexpr (has_from_json_array_in_spec<T>) {
         if (!val.is_array()) {
-            val.throw_type_error(value::value_type::array);
+            val.throw_type_error(_reflection::type_name<T>(), value::value_type::array);
         }
         return jsonization<T> { }.from_json(std::forward<U>(val).as_array_unsafe(), t);
     }
     else if constexpr (has_from_json_object_in_spec<T>) {
         if (!val.is_object()) {
-            val.throw_type_error(value::value_type::object);
+            val.throw_type_error(_reflection::type_name<T>(), value::value_type::object);
         }
         return jsonization<T> { }.from_json(std::forward<U>(val).as_object_unsafe(), t);
     }

@@ -1,10 +1,19 @@
 #pragma once
 
+#ifndef MEOJSON_MODULE
+#include <format>
+#endif
+
 #include "../object.hpp"
 #include "../value.hpp"
 
 namespace json
 {
+
+inline std::string object::value_info() const noexcept
+{
+    return std::format("type=object, size={}", size());
+}
 
 template <ext::has_check_json_object T>
 inline bool object::is() const noexcept

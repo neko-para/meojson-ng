@@ -53,6 +53,8 @@ public:
 
 #pragma mark - Checker
 public:
+    std::string value_info() const noexcept;
+
     template <ext::has_check_json_array T>
     bool is() const noexcept;
 

@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef MEOJSON_MODULE
+#include <format>
+#endif
+
 #include "../array.hpp"
 #include "../object.hpp"
 #include "../value.hpp"
@@ -33,6 +37,46 @@ inline bool value::empty() const noexcept
 inline value::value_type value::type() const noexcept
 {
     return _type;
+}
+
+inline std::string_view value::type_name() const noexcept
+{
+    std::string_view name = _reflection::enum_to_string(_type);
+    return name.empty() ? "unknown" : name;
+}
+
+inline std::string value::value_info() const noexcept
+{
+    std::string info = std::format("type={}", type_name());
+    try {
+        switch (_type) {
+        case value_type::null:
+        case value_type::invalid:
+            break;
+        case value_type::boolean:
+        case value_type::number:
+        case value_type::string: {
+            std::string str_repr = to_string();
+            if (str_repr.length() > 100) {
+                info += ", value=" + str_repr.substr(0, 100) + "...";
+            }
+            else {
+                info += ", value=" + str_repr;
+            }
+            break;
+        }
+        case value_type::array:
+            info += ", size=" + std::to_string(as_array_unsafe().size());
+            break;
+        case value_type::object:
+            info += ", size=" + std::to_string(as_object_unsafe().size());
+            break;
+        }
+        return info;
+    }
+    catch (...) {
+        return info;
+    }
 }
 
 inline bool value::is_null() const noexcept

@@ -14,7 +14,7 @@ namespace json
 inline value::operator std::nullptr_t() const
 {
     if (!is_null()) {
-        throw_type_error(value_type::null);
+        throw_type_error("nullptr", value_type::null);
     }
     return { };
 }
@@ -22,7 +22,7 @@ inline value::operator std::nullptr_t() const
 inline value::operator std::monostate() const
 {
     if (!is_null()) {
-        throw_type_error(value_type::null);
+        throw_type_error("monostate", value_type::null);
     }
     return { };
 }
@@ -30,7 +30,7 @@ inline value::operator std::monostate() const
 inline bool value::as_boolean() const
 {
     if (!is_boolean()) {
-        throw_type_error(value_type::boolean);
+        throw_type_error("bool", value_type::boolean);
     }
     const auto& str = as_basic_type_str();
     if (str == _utils::true_string()) {
@@ -52,20 +52,23 @@ inline value::operator bool() const
 inline int value::as_integer() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("int", value_type::number);
     }
     return std::stoi(as_basic_type_str());
 }
 
 inline unsigned value::as_unsigned() const
 {
-    return static_cast<unsigned>(as_unsigned_long());
+    if (!is_number()) {
+        throw_type_error("unsigned", value_type::number);
+    }
+    return std::stoul(as_basic_type_str());
 }
 
 inline long value::as_long() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("long", value_type::number);
     }
     return std::stol(as_basic_type_str());
 }
@@ -73,7 +76,7 @@ inline long value::as_long() const
 inline unsigned long value::as_unsigned_long() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("unsigned long", value_type::number);
     }
     return std::stoul(as_basic_type_str());
 }
@@ -81,7 +84,7 @@ inline unsigned long value::as_unsigned_long() const
 inline long long value::as_long_long() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("long long", value_type::number);
     }
     return std::stoll(as_basic_type_str());
 }
@@ -89,7 +92,7 @@ inline long long value::as_long_long() const
 inline unsigned long long value::as_unsigned_long_long() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("unsigned long long", value_type::number);
     }
     return std::stoull(as_basic_type_str());
 }
@@ -97,7 +100,7 @@ inline unsigned long long value::as_unsigned_long_long() const
 inline float value::as_float() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("float", value_type::number);
     }
     return std::stof(as_basic_type_str());
 }
@@ -105,7 +108,7 @@ inline float value::as_float() const
 inline double value::as_double() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("double", value_type::number);
     }
     return std::stod(as_basic_type_str());
 }
@@ -113,7 +116,7 @@ inline double value::as_double() const
 inline long double value::as_long_double() const
 {
     if (!is_number()) {
-        throw_type_error(value_type::number);
+        throw_type_error("long double", value_type::number);
     }
     return std::stold(as_basic_type_str());
 }
@@ -166,7 +169,7 @@ inline value::operator long double() const
 inline const std::string& value::as_string() const&
 {
     if (!is_string()) {
-        throw_type_error(value_type::string);
+        throw_type_error("string", value_type::string);
     }
     return as_basic_type_str();
 }
@@ -174,7 +177,7 @@ inline const std::string& value::as_string() const&
 inline std::string& value::as_string() &
 {
     if (!is_string()) {
-        throw_type_error(value_type::string);
+        throw_type_error("string", value_type::string);
     }
     return as_basic_type_str();
 }
@@ -182,7 +185,7 @@ inline std::string& value::as_string() &
 inline std::string value::as_string() &&
 {
     if (!is_string()) {
-        throw_type_error(value_type::string);
+        throw_type_error("string", value_type::string);
     }
     return std::move(as_basic_type_str());
 }
@@ -215,7 +218,7 @@ inline value::operator std::string() &&
 inline std::string_view value::as_string_view() const&
 {
     if (!is_string()) {
-        throw_type_error(value_type::string);
+        throw_type_error("string_view", value_type::string);
     }
     return as_basic_type_str();
 }
@@ -228,7 +231,7 @@ inline value::operator std::string_view() const&
 inline const array& value::as_array() const&
 {
     if (!is_array()) {
-        throw_type_error(value_type::array);
+        throw_type_error("array", value_type::array);
     }
     return *std::get<array_ptr>(_data);
 }
@@ -241,7 +244,7 @@ inline array& value::as_array() &
         return as_array_unsafe();
     }
     if (!is_array()) {
-        throw_type_error(value_type::array);
+        throw_type_error("array", value_type::array);
     }
     return *std::get<array_ptr>(_data);
 }
@@ -249,7 +252,7 @@ inline array& value::as_array() &
 inline array value::as_array() &&
 {
     if (!is_array()) {
-        throw_type_error(value_type::array);
+        throw_type_error("array", value_type::array);
     }
     return std::move(*std::get<array_ptr>(_data));
 }
@@ -282,7 +285,7 @@ inline value::operator array() &&
 inline const object& value::as_object() const&
 {
     if (!is_object()) {
-        throw_type_error(value_type::object);
+        throw_type_error("object", value_type::object);
     }
     return *std::get<object_ptr>(_data);
 }
@@ -295,7 +298,7 @@ inline object& value::as_object() &
         return as_object_unsafe();
     }
     if (!is_object()) {
-        throw_type_error(value_type::object);
+        throw_type_error("object", value_type::object);
     }
     return *std::get<object_ptr>(_data);
 }
@@ -303,7 +306,7 @@ inline object& value::as_object() &
 inline object value::as_object() &&
 {
     if (!is_object()) {
-        throw_type_error(value_type::object);
+        throw_type_error("object", value_type::object);
     }
     return std::move(*std::get<object_ptr>(_data));
 }
@@ -349,7 +352,7 @@ inline value::operator enum_t() const
         return static_cast<enum_t>(static_cast<std::underlying_type_t<enum_t>>(*this));
     }
     else {
-        throw_type_error(value_type::number);
+        throw_type_error("enum", value_type::number);
     }
 }
 

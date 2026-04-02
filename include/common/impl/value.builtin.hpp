@@ -164,9 +164,9 @@ inline raw_value value::deep_copy(const raw_value& src)
     return dst;
 }
 
-inline void value::throw_type_error(value_type expected) const
+inline void value::throw_type_error(std::string_view target, value_type expected) const
 {
-    throw type_error { expected, _type };
+    throw type_error { target, expected, *this };
 }
 
 inline const std::string& value::as_basic_type_str() const

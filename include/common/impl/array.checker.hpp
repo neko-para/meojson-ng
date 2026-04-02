@@ -1,10 +1,19 @@
 #pragma once
 
+#ifndef MEOJSON_MODULE
+#include <format>
+#endif
+
 #include "../array.hpp"
 #include "../value.hpp"
 
 namespace json
 {
+
+inline std::string array::value_info() const noexcept
+{
+    return std::format("type=array, size={}", size());
+}
 
 template <ext::has_check_json_array T>
 inline bool array::is() const noexcept

@@ -2,6 +2,7 @@
 
 #include "../array.hpp"
 #include "../value.hpp"
+#include "exception.hpp"
 #include "extends.impl.hpp"
 
 namespace json::ext
@@ -43,7 +44,7 @@ public:
     requires can_from_value<inner_type>
     {
         if (arr.size() != N) {
-            return false;
+            throw type_error { _reflection::type_name<T>(), value::value_type::array, arr };
         }
         for (size_t i = 0; i < N; i++) {
             t.at(i) = arr[i].as<inner_type>();
@@ -66,7 +67,7 @@ public:
     requires can_from_value<inner_type>
     {
         if (arr.size() != N) {
-            return false;
+            throw type_error { _reflection::type_name<T>(), value::value_type::array, arr };
         }
         for (size_t i = 0; i < N; i++) {
             t.at(i) = std::move(arr[i]).as<inner_type>();

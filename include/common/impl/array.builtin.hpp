@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../array.hpp"
-#include "../object.hpp"
 #include "../value.hpp"
-#include "extends.impl.hpp"
 
 namespace json
 {

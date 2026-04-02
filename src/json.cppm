@@ -10,6 +10,7 @@ module;
 #include <cstring>
 #include <exception>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iomanip>
 #include <iterator>

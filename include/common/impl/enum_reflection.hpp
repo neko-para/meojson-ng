@@ -4,7 +4,6 @@
 #include <array>
 #include <optional>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #endif
 
@@ -19,6 +18,39 @@ namespace json
 {
 namespace _reflection
 {
+
+template <typename T>
+consteval std::string_view type_name() noexcept
+{
+#if defined(__clang__) || defined(__GNUG__)
+    std::string_view name = __PRETTY_FUNCTION__;
+    auto start = name.find("T = ");
+    if (start == std::string_view::npos) {
+        return { };
+    }
+    start += 4;
+    auto end = name.find_last_of(']');
+    if (end == std::string_view::npos) {
+        return { };
+    }
+    return name.substr(start, end - start);
+#elif defined(_MSC_VER)
+    std::string_view name = __FUNCSIG__;
+    auto start = name.find("type_name<");
+    if (start == std::string_view::npos) {
+        return { };
+    }
+    start += 10;
+    auto end = name.find(">(void) noexcept");
+    if (end == std::string_view::npos) {
+        return { };
+    }
+    return name.substr(start, end - start);
+#else
+    return { };
+#endif
+}
+
 template <typename E, E V>
 constexpr std::string_view name() noexcept
 {

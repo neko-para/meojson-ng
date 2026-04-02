@@ -137,8 +137,10 @@ template <typename T>
 concept has_reserve = requires(T t, size_t n) { t.reserve(n); };
 
 template <typename T>
-concept support_as_ref =
-    std::is_same_v<T, value> || std::is_same_v<T, array> || std::is_same_v<T, object> || std::is_same_v<T, std::string>;
+concept is_json_type = same_as_one_of<T, value, array, object>;
+
+template <typename T>
+concept support_as_ref = is_json_type<T> || std::is_same_v<T, std::string>;
 
 template <typename T>
 concept is_builtin_primitive_without_string = std::is_same_v<T, nullptr_t> || std::is_same_v<T, std::monostate> || std::is_same_v<T, bool>
